@@ -14,6 +14,7 @@ class object{
         float angle;
         sf::Vector2f velocity;
         sf::Vector2f position;
+        sf::VertexArray verts;
     public:
         object(int n, float h, float w, float e, float f, float m, float av, float a, sf::Vector2f v, sf::Vector2f pos);
         object(int n, float r, sf::Vector2f pos);

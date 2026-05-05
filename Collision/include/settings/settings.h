@@ -17,6 +17,8 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include <SFML/Window/Keyboard.hpp>
+#include <bits/stdc++.h>
+#include <memory>
 
 extern float windowWidth;
 extern float windowHeight;
