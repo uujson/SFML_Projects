@@ -1,8 +1,8 @@
 #include "settings.h"
 
 float tickTime = 1.f/144.f;
-float windowWidth = 800;
-float windowHeight = 800;
+float windowWidth = 200;
+float windowHeight = 200;
 sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Collision Simulation");
 sf::Event event;
 

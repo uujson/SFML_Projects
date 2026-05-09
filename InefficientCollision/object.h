@@ -2,7 +2,9 @@
 
 #include "settings.h"
 
-#define RADIUS 5.f
+#define RADIUS 1.f
+
+#define SQUARE_RADIUS RADIUS*RADIUS*4.f
 
 class object{
     private:
@@ -18,6 +20,7 @@ class object{
         void collide(object &other);
         void setPosition(sf::Vector2f pos);
         void setVelocity(sf::Vector2f v);
+        bool estimate(object &other);
         sf::Vector2f getPosition();
         sf::Vector2f getVelocity();
         float getMass();
