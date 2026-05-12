@@ -5,7 +5,7 @@
 int main(){
     window.setFramerateLimit(144);
     window.setPosition(sf::Vector2i(0,0));
-    quadtree tree = quadtree(35);
+    quadtree tree = quadtree(20);
     sf::Clock clock;
     sf::Time elapsed;
     while(window.isOpen()){
