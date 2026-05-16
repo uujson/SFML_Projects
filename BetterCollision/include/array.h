@@ -7,11 +7,13 @@
 
 class array: public sf::Drawable{
     private:
-        grid *grids;
-        std::vector<object> objects;
+        grid **grids;
+        std::vector<std::shared_ptr<object>> objects;
         sf::VertexArray vertices;
+        int number;
         float cellSize;
-        int ngrids;
+        void initialize(int n);
+        void gridUpdate(std::shared_ptr<object> o);
     public:
         array();
         array(int n);

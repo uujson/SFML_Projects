@@ -1,8 +1,10 @@
 #include "settings.h"
 
-float tickTime = 1.f/144.f;
-float windowWidth = 400;
-float windowHeight = 400;
+float MAXFRAMERATE = 24.f;
+int MAXGRIDS = 8;
+float tickTime = 1.f/MAXFRAMERATE;
+float windowWidth = 1000;
+float windowHeight = 1000;
 sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Collision Simulation");
 sf::Event event;
 

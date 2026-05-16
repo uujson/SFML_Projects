@@ -1,65 +1,41 @@
 #include "object.h"
 
+float randFloat(){
+    return float(rand()%5)-2.5;
+}
+
 object::object(){
-    index = -1;
-    next = -1;
     radius = 0.f;
     mass = 0.f;
     position.zero();
     velocity.zero();
-    newVelocity.zero();
 }
 
-object::object(int32_t n){
-    index = n;
-    next = -1;
-    radius = 0.f;
-    mass = 0.f;
-    position.zero();
-    velocity.zero();
-    newVelocity.zero();
-}
-
-object::object(int32_t n, vector2f pos){
-    index = n;
-    next = -1;
+object::object(vector2f pos){
     position = pos;
-    radius = float(rand()%5)+1.f;
-    mass = radius*radius*M_PI;
+    radius = 2.f;
+    mass = 1.f;
     velocity.x = randFloat();
     velocity.y = randFloat();
-    newVelocity = velocity;
 }
 
-object::object(int32_t n, float x, float y) : object(n, vector2f(x,y)) {}
+object::object(float x, float y) : object(vector2f(x,y)) {}
 
 vector2f object::getPosition(){ return position; }
 
 vector2f object::getVelocity(){ return velocity; }
 
-float object::getX(){ return position.x; }
-
-float object::getY(){ return position.y; }
-
 float object::getRadius(){ return radius; }
 
 float object::getMass(){ return mass; }
 
-int32_t object::getIndex(){ return index; }
-
-int32_t object::getNext(){ return next; }
-
-void object::setNext(int32_t n){ next = n; }
-
 void object::update(){
-    if (newVelocity != 0.f){
-        velocity = newVelocity;
-        newVelocity.zero();
+    position += velocity*tickTime;
+    int walls[4] = {(position.y <= radius)*1, (position.x > windowWidth-radius)*2, (position.x <= radius)*3, (position.y > windowHeight-radius)*4};
+    for (int i = 0; i < 4; i++){
+        bounce(walls[i]);
     }
-    position += velocity;
 }
-
-void object::clear(){ next = -1; }
 
 void object::setVelocity(vector2f v){ velocity = v; }
 
@@ -73,7 +49,7 @@ bool object::intersect(object other){
     return ((position - other.getPosition()).sqd() <= (totalRadius*totalRadius));
 }
 
-vector2f object::collide(object &other){
+void object::collide(object &other){
     vector2f p0 = position;
     vector2f p1 = other.getPosition();
     vector2f v0 = velocity;
@@ -86,6 +62,35 @@ vector2f object::collide(object &other){
     vector2f v01 = v0-v1;
     vector2f new0 = v0 - p10 * (2.f*m1/(m0+m1) * (v10*p10)/p10.sqd());
     vector2f new1 = v1 - p01 * (2.f*m0/(m0+m1) * (v01*p01)/p01.sqd());
-    velocityChange(new0);
-    other.velocityChange(new1);
+    setVelocity(new0);
+    other.setVelocity(new1);
+}
+
+void object::bounce(int wall){
+    float dt = 0;
+    float tempX = velocity.x;
+    float tempY = velocity.y;
+    switch(wall){
+        case 1:
+            if ((position.y - radius) + velocity.y*tickTime < 0){
+                tempY *= -1.f;
+            }
+            break;
+        case 2:
+            if (position.x + radius + velocity.x*tickTime >= windowWidth){
+                tempX *= -1.f;
+            }
+            break;
+        case 3:
+            if (position.x - radius + velocity.x*tickTime < 0){
+                tempX *= -1.f;
+            }
+            break;
+        case 4:
+            if (position.y + radius + velocity.y*tickTime >= windowHeight){
+                tempY *= -1.f;
+            }
+            break;
+    }
+    setVelocity(vector2f(tempX,tempY));
 }

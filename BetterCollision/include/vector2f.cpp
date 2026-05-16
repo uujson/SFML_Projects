@@ -33,31 +33,37 @@ vector2f vector2f::operator*(const float f){
 vector2f &vector2f::operator=(const vector2f other){
     x = other.x;
     y = other.y;
+    return *this;
 }
 
 vector2f &vector2f::operator=(const int other){
     x = float(other);
     y = float(other);
+    return *this;
 }
 
 vector2f &vector2f::operator/=(const float other){
     x /= other;
     y /= other;
+    return *this;
 }
 
 vector2f &vector2f::operator*=(const float other){
     x *= other;
     y *= other;
+    return *this;
 }
 
 vector2f &vector2f::operator+=(const vector2f other){
     x += other.x;
     y += other.y;
+    return *this;
 }
 
 vector2f &vector2f::operator-=(const vector2f other){
     x -= other.x;
     y -= other.y;
+    return *this;
 }
 
 bool vector2f::operator==(const vector2f other){
