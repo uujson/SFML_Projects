@@ -25,13 +25,14 @@ std::vector<std::shared_ptr<object>> grid::update(){
                 objects[i]->collide(*objects[j]);
             }
         }
-        objects[i]->update();
     }
+
     for(int i = 0; i < objects.size(); i++){
         if(!contains(*objects[i])){
             oob.push_back(objects[i]);
             objects.erase(objects.begin()+i);
             i--;
+            if (i < 0){ i = 0; }
         }
     }
     return oob;
@@ -44,7 +45,7 @@ void grid::insert(std::shared_ptr<object> o){
 }
 
 bool grid::contains(float X, float Y){
-    return ((xy.x+size/2 >= X) & (xy.x-size/2 <= X)) & ((xy.y+size/2 >= Y) & (xy.y-size/2 <= Y));
+    return ((xy.x+size/2 > X) & (xy.x-size/2 <= X)) & ((xy.y+size/2 > Y) & (xy.y-size/2 <= Y));
 }
 
 bool grid::contains(vector2f xy){

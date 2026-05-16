@@ -1,7 +1,7 @@
 #include "object.h"
 
 float randFloat(){
-    return float(rand()%5)-2.5;
+    return float(rand()%3)-1.5;
 }
 
 object::object(){
@@ -13,7 +13,7 @@ object::object(){
 
 object::object(vector2f pos){
     position = pos;
-    radius = 2.f;
+    radius = float(rand()%3)+1.f;
     mass = 1.f;
     velocity.x = randFloat();
     velocity.y = randFloat();
@@ -30,7 +30,7 @@ float object::getRadius(){ return radius; }
 float object::getMass(){ return mass; }
 
 void object::update(){
-    position += velocity*tickTime;
+    position += velocity;
     int walls[4] = {(position.y <= radius)*1, (position.x > windowWidth-radius)*2, (position.x <= radius)*3, (position.y > windowHeight-radius)*4};
     for (int i = 0; i < 4; i++){
         bounce(walls[i]);
@@ -60,8 +60,8 @@ void object::collide(object &other){
     vector2f p01 = p0-p1;
     vector2f v10 = v1-v0;
     vector2f v01 = v0-v1;
-    vector2f new0 = v0 - p10 * (2.f*m1/(m0+m1) * (v10*p10)/p10.sqd());
-    vector2f new1 = v1 - p01 * (2.f*m0/(m0+m1) * (v01*p01)/p01.sqd());
+    vector2f new0 = v0 - p01 * (2.f*m1/(m0+m1) * (v01*p01)/p01.sqd());
+    vector2f new1 = v1 - p10 * (2.f*m0/(m0+m1) * (v10*p10)/p10.sqd());
     setVelocity(new0);
     other.setVelocity(new1);
 }

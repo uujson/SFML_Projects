@@ -28,6 +28,8 @@ extern int MAXGRIDS;
 extern float windowWidth;
 extern float windowHeight;
 extern float tickTime;
+extern float SQRT_TWO;
+extern float SQRT_TWO_INVERSE;
 extern sf::RenderWindow window;
 extern sf::Event event;
 
