@@ -3,8 +3,8 @@
 float MAXFRAMERATE = 144.f;
 int MAXGRIDS = 16;
 float tickTime = 1.f/MAXFRAMERATE;
-float windowWidth = 800;
-float windowHeight = 800;
+float windowWidth = 600;
+float windowHeight = 600;
 float SQRT_TWO = float(sqrt(2));
 float SQRT_TWO_INVERSE = float(1/sqrt(2));
 sf::RenderWindow window(sf::VideoMode(windowWidth, windowHeight), "Collision Simulation");
