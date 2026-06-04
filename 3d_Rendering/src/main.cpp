@@ -1,12 +1,13 @@
 #include "renderer/renderer.hpp"
 
 
+
 int main(){
-    renderer r = renderer(vec3(2.0,2.0,2.0),45.0);
+    renderer r = renderer(vec3(2.15,2.15,2.15),45.0);
     r.project(vec3(0.0,0.0,0.0));
-    r.project(vec3(0.1,0.0,0.0));
-    r.project(vec3(0.0,0.1,0.0));
-    r.project(vec3(0.0,0.0,0.1));
+    r.project(vec3(1,0.0,0.0));
+    r.project(vec3(0.0,1,0.0));
+    r.project(vec3(0.0,0.0,1));
     // renderer r = renderer();
     // line xline = line(0);
     // line yline = line(1);
