@@ -30,6 +30,7 @@ vec3 vec3::operator-(){ return vec3(-x,-y,-z); }
 vec3 vec3::operator+(const vec3 &o){ return vec3(x + o.x, y + o.y, z + o.z); }
 vec3 vec3::operator-(const vec3 &o){ return vec3(x - o.x, y - o.y, z - o.z); }
 // scalar assignment operators
+vec3& vec3::operator=(const double o[3]){ x = o[0]; y = o[1]; z = o[2]; return *this; }
 vec3& vec3::operator/=(const double &o){ x /= o; y /= o; z /= o; return *this; }
 vec3& vec3::operator*=(const double &o){ x *= o; y *= o; z *= o; return *this; }
 // vector assignment operators
@@ -171,7 +172,7 @@ mat4::mat4(const vec4 r0, const vec4 r1, const vec4 r2, const vec4 r3){
     m[2][0] = r2.x; m[2][1] = r2.y; m[2][2] = r2.z; m[2][3] = r2.w;
     m[3][0] = r2.x; m[3][1] = r2.y; m[3][2] = r3.z; m[3][3] = r3.w;
 }
-vec4 mat4::operator*(vec4 v){ return vec4(v*(*this)[0], v*(*this)[1], v*(*this)[2], v*(*this)[3]); }
+vec4 mat4::operator*(vec4 v){ return vec4(v*row(0), v*row(1), v*row(2), v*row(3)); }
 mat4 mat4::operator*(mat4 o){
     vec4 o0,o1,o2,o3,m0,m1,m2,m3;
     o0 = o.col(0);

@@ -1,7 +1,7 @@
 #pragma once
 
-#ifndef SETTINGS
-#define SETTINGS
+#ifndef SETTINGS_HPP
+#define SETTINGS_HPP
 
 #include <string>
 #include <stdlib.h>

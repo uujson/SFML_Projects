@@ -38,6 +38,7 @@ class vec3{
         vec3 operator+(const vec3 &o);
         vec3 operator-(const vec3 &o);
         // scalar assignment operators
+        vec3& operator=(const double o[3]);
         vec3& operator/=(const double &o);
         vec3& operator*=(const double &o);
         // vector assignment operators
