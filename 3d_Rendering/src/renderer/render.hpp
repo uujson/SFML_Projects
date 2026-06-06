@@ -38,6 +38,7 @@ class camera{
         }
         vec3 worldTranslate(){ return -position; }
         mat4 viewMatrix(){
+            update();
             vec3 temp = worldTranslate();
             return mat4(
                 vec4(rightNormal, rightNormal*temp),
@@ -85,6 +86,8 @@ class render{
             v3.y = v3.y * WINDOW_HEIGHT + WINDOW_HEIGHT_HALF;
             return v3;
         }
+        vec3 getCameraNormal(){ return Camera.normal; }
+        vec3 getCameraPosition(){ return Camera.position; }
 };
 
 #endif

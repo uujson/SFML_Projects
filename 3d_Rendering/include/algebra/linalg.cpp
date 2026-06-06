@@ -3,6 +3,19 @@
 //----------------------------------------------| Constant Variables |----------------------------------------------\\
 
 const double DEG2RADS = M_PI/180.0;
+const vec3 ZERO3 = vec3(0,0,0);
+const vec4 ZERO4 = vec4(0,0,0,1);
+const mat3 IDEN3 = mat3(
+    1,0,0,
+    0,1,0,
+    0,0,1
+);
+const mat4 IDEN4 = mat4(
+    1,0,0,0,
+    0,1,0,0,
+    0,0,1,0,
+    0,0,0,1
+);
 
 //----------------------------------------------| 3D Vector Helpers |----------------------------------------------\\
 
@@ -11,6 +24,8 @@ double magnitude(vec3 v){ return v.magnitude(); }
 vec3 normalize(vec3 v){ return v.normalized(); }
 
 vec3 cross(vec3 l, vec3 r){ return l(r); }
+
+double buffer(vec3 v){ return (v.x*v.x + v.y*v.y + v.z*v.z); }
 
 //----------------------------------------------| 2D Vector |----------------------------------------------\\
 
@@ -21,6 +36,8 @@ vec2 vec2::operator/(const double &o){ return vec2(x/o,y/o); }
 //----------------------------------------------| 3D Vector |----------------------------------------------\\
 
 vec3::vec3() : vec3(0,0,0){}
+vec3::vec3(const double XYZ[3]) : vec3(XYZ[0], XYZ[1], XYZ[2]){}
+vec3::vec3(vec4 XYZW) : vec3(XYZW.x, XYZW.y, XYZW.z){}
 vec3::vec3(const double &X, const double &Y, const double &Z) : x(X), y(Y), z(Z){}
 // scalar operators
 vec3 vec3::operator*(const double &o){ return vec3(x * o, y * o, z * o); }
@@ -99,6 +116,13 @@ vec4 vec4::normalized(){ return vec4(x,y,z,w)/magnitude(); }
 //----------------------------------------------| 3x3 Matrix |----------------------------------------------\\
 
 mat3::mat3() : mat3(1.0){}
+mat3::mat3(const double d00, const double d01, const double d02,
+        const double d10, const double d11, const double d12,
+        const double d20, const double d21, const double d22) : mat3(
+            vec3(d00,d01,d02),
+            vec3(d10,d11,d12),
+            vec3(d20,d21,d22)
+        ){}
 mat3::mat3(const double &n){
     for (int i = 0; i < 3; i++){
         for (int j = 0; j < 3; j++){
@@ -155,6 +179,15 @@ vec3 mat3::operator[](const int n){ return vec3(m[n][0],m[n][1],m[n][2]); }
 //----------------------------------------------| 4x4 Matrix |----------------------------------------------\\
 
 mat4::mat4() : mat4(1.0){}
+mat4::mat4(const double d00, const double d01, const double d02, const double d03,
+    const double d10, const double d11, const double d12, const double d13,
+    const double d20, const double d21, const double d22, const double d23,
+    const double d30, const double d31, const double d32, const double d33) : mat4(
+            vec4(d00,d01,d02,d03),
+            vec4(d10,d11,d12,d13),
+            vec4(d20,d21,d22,d23),
+            vec4(d30,d31,d32,d33)
+        ){}
 mat4::mat4(const double &n){
     for (int i = 0; i < 4; i++){
         for (int j = 0; j < 4; j++){

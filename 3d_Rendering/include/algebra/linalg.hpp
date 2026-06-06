@@ -14,8 +14,13 @@ class mat4;
 double magnitude(vec3 v);
 vec3 normalize(vec3 v);
 vec3 cross(vec3 l, vec3 r);
+double buffer(vec3 v);
 
 extern const double DEG2RADS;
+extern const vec3 ZERO3;
+extern const vec4 ZERO4;
+extern const mat3 IDEN3;
+extern const mat4 IDEN4;
 
 class vec2{
     public:
@@ -30,6 +35,8 @@ class vec3{
         double x,y,z;
         vec3();
         vec3(const double &X, const double &Y, const double &Z);
+        vec3(const double XYZ[3]);
+        vec3(vec4 XYZW);
         // scalar operators
         vec3 operator*(const double &o);
         vec3 operator/(const double &o);
@@ -96,6 +103,9 @@ class mat3{
     public:
         double m[3][3];
         mat3();
+        mat3(const double d00, const double d01, const double d02,
+            const double d10, const double d11, const double d12,
+            const double d20, const double d21, const double d22);
         mat3(const double &n);
         mat3(const vec3 r0, const vec3 r1, const vec3 r2);
         vec3 operator*(vec3 v);
@@ -111,6 +121,10 @@ class mat4{
     public:
         double m[4][4];
         mat4();
+        mat4(const double d00, const double d01, const double d02, const double d03,
+            const double d10, const double d11, const double d12, const double d13,
+            const double d20, const double d21, const double d22, const double d23,
+            const double d30, const double d31, const double d32, const double d33);
         mat4(const double &n);
         mat4(const vec4 r0, const vec4 r1, const vec4 r2, const vec4 r3);
         vec4 operator*(vec4 v);
