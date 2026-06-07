@@ -3,10 +3,9 @@
 
 
 class line : public sf::Drawable {
-    private:
+    public:
         vec3 position[2];
         sf::VertexArray vertices;
-    public:
         line(){
             vertices.resize(2);
             vertices.setPrimitiveType(sf::Lines);
@@ -26,7 +25,7 @@ class line : public sf::Drawable {
 int main(){
     double radians = 0.0;
     render r = render(vec3(0,0,0),45.0);
-    cube testCube = cube({1,1,0},{0,0,0},{2,2,1});
+    cube testCube = cube({2,1,0},{0,0,0},{2,2,1});
     line lines[12];
     // cube testCube;
     // testCube;
@@ -35,8 +34,8 @@ int main(){
     verts.setPrimitiveType(sf::Triangles);
     window.setFramerateLimit(60.0);
     while (window.isOpen()){
-        r.setCameraPosition(vec3(4.0*cos(radians),4.0*sin(radians),4));
-        testCube.updatePoints(r.getCameraPosition(),r.getCameraNormal());
+        r.setCameraPosition(vec3(6.0*cos(radians),6.0*sin(radians),6));
+        testCube.updatePoints(r.getCameraPosition(),r.getCameraNormal(),r.getCameraTarget());
         for (int i = 0; i < 36; i++){
             vec3 temp = r.project(testCube.points[i]);
             verts[i].position = sf::Vector2f(temp.x,temp.y);
@@ -44,6 +43,8 @@ int main(){
         }
         for (int i = 0; i < 12; i++){
             vec3 temp = r.project(testCube.triangles[i].midpoint);
+            vec3 temp2 = r.project(testCube.triangles[i].midpoint + testCube.triangles[i].normal);
+            lines[i].vertices[0].position = sf::Vector2f(temp2.x, temp2.y);
             lines[i].setPosition(temp);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){ window.close(); }

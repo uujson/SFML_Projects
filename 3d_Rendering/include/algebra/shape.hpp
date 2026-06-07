@@ -49,7 +49,12 @@ class triangle{
             updateNormal();
             updateMidpoint();
         }
-        void updateNormal(){ normal = cross((points[2]-points[1]),(points[0]-points[1])); }
+        void updateNormal(){
+            normal = normalize(cross((points[2]-points[1]),(points[0]-points[1])));
+            // if (normal.x != 0){ normal.x /= abs(normal.x); }
+            // if (normal.y != 0){ normal.y /= abs(normal.y); }
+            // if (normal.z != 0){ normal.z /= abs(normal.z); }
+        }
         void updateMidpoint(){ midpoint = (points[0]+points[1]+points[2])/3; }
         triangle& operator=(const triangle o){
             for (int i = 0; i < 3; i++){ points[i] = o.points[i]; }
@@ -59,19 +64,22 @@ class triangle{
         }
         triangle& operator*=(mat4 m){
             for (int i = 0; i < 3; i++){ points[i] = m*vec4(points[i]);}
-            midpoint = m*vec4(midpoint);
+            updateMidpoint();
             updateNormal();
             return *this;
         }
-        double operator*(vec3 v){
-            return normal*v;
+        bool operator*(vec3 v){
+            vec3 temp = normalize(v) + normalize(midpoint);
+            return (
+                !std::signbit(temp.x*normal.x) &
+                !std::signbit(temp.y*normal.y) &
+                !std::signbit(temp.z*normal.z) 
+            );
         }
 };
 
 bool tcsort(triangle a, triangle b, vec3 cp, vec3 cn){
-    double ca = buffer(cp-a.midpoint)*(b*cn);
-    double cb = buffer(cp-b.midpoint)*(b*cn);
-    return (((ca) < (cb)));
+    return (((cp - a.midpoint))*cn < ((cp - b.midpoint))*cn);
 }
 
 class cube{
@@ -151,12 +159,12 @@ class cube{
             mat4 m = model();
             for (int i = 0; i < 12; i++){ triangles[i] *= m; }
         }
-        void updatePoints(vec3 cameraP, vec3 cameraN){
+        void updatePoints(vec3 cameraP, vec3 cameraN, vec3 cameraT){
             std::sort(triangles.begin(), triangles.end(),
                 std::bind(tcsort, std::placeholders::_1,std::placeholders::_2, cameraP, cameraN));
             for (int i = 0; i < 12; i++){
                 int temp = i*3;
-                if(triangles[i]*cameraN > 0){
+                if(triangles[i]*cameraP){
                     points[temp] = triangles[i].points[2];
                     points[temp+1] = triangles[i].points[1];
                     points[temp+2] = triangles[i].points[0];

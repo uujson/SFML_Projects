@@ -88,6 +88,7 @@ class render{
         }
         vec3 getCameraNormal(){ return Camera.normal; }
         vec3 getCameraPosition(){ return Camera.position; }
+        vec3 getCameraTarget(){ return Camera.lookingAt; }
 };
 
 #endif
