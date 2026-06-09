@@ -24,13 +24,13 @@ const double ROTATE_UNIT = 1.0/180.0*M_PI;
 // }
 
 // aspectRatio = Width/Height
-mat4 projectionMatrix(double degrees, double aspectRatio, double nearPlane, double farPlane){
-    double fov = 1.0/tan(degrees*DEG2RADS*0.5);
-    mat4 perspective = mat4(
-        vec4(fov, 0, 0, 0),
-        vec4(0, fov*aspectRatio, 0, 0),
-        vec4(0, 0, (farPlane)/(farPlane-nearPlane), (farPlane*nearPlane)/(farPlane-nearPlane)),
-        vec4(0,0,1, 0)
-    );
-    return perspective;
-}
+// mat4 projectionMatrix(double degrees, double aspectRatio, double nearPlane, double farPlane){
+//     double fov = 1.0/tan(degrees*DEG2RADS*0.5);
+//     mat4 perspective = mat4(
+//         vec4(fov, 0, 0, 0),
+//         vec4(0, fov*aspectRatio, 0, 0),
+//         vec4(0, 0, (farPlane)/(farPlane-nearPlane), (farPlane*nearPlane)/(farPlane-nearPlane)),
+//         vec4(0,0,1, 0)
+//     );
+//     return perspective;
+// }

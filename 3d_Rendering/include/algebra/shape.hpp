@@ -11,6 +11,7 @@
 
 const double ISQRT2 = 1/sqrt(2);
 const double SQRT2 = sqrt(2);
+const double ANGLE = sin(M_PI/24);
 
 
 const double N = -1;
@@ -24,6 +25,15 @@ const double P = 1;
    |/     \|
    6-------7
 */
+
+// bool sameDirection(vec3 v1, vec3 v2){
+//     vec3 temp = v1-v2;
+//     int anti = 3;
+//     if (temp.x < 0){}
+//     return (
+//         anti%2 != 1
+//     );
+// }
 
 
 vec3 CUBE[8] = {
@@ -50,7 +60,7 @@ class triangle{
             updateMidpoint();
         }
         void updateNormal(){
-            normal = normalize(cross((points[2]-points[1]),(points[0]-points[1])));
+            normal = normalize(cross((points[1]-points[2]),(points[1]-points[0])));
             // if (normal.x != 0){ normal.x /= abs(normal.x); }
             // if (normal.y != 0){ normal.y /= abs(normal.y); }
             // if (normal.z != 0){ normal.z /= abs(normal.z); }
@@ -69,17 +79,12 @@ class triangle{
             return *this;
         }
         bool operator*(vec3 v){
-            vec3 temp = normalize(v) + normalize(midpoint);
-            return (
-                !std::signbit(temp.x*normal.x) &
-                !std::signbit(temp.y*normal.y) &
-                !std::signbit(temp.z*normal.z) 
-            );
+            return (normalize(v-midpoint) * (normal) >= -ANGLE);
         }
 };
 
 bool tcsort(triangle a, triangle b, vec3 cp, vec3 cn){
-    return (((cp - a.midpoint))*cn < ((cp - b.midpoint))*cn);
+    return ((cn*(cp-a.midpoint)) < (cn*(cp-b.midpoint)));
 }
 
 class cube{
@@ -150,7 +155,7 @@ class cube{
         cube& operator-=(const vec3 d){ translateCube(d); return *this; }
         cube& operator/=(const double d){ scaleCube(d); return *this; }
         cube& operator*=(const double d){ scaleCube(d); return *this; }
-        mat4 model(){ return (scale4(scale)*rotate4(rotate)*translate4(translate)); }
+        mat4 model(){ return (translate4(translate)*rotate4(rotate)*scale4(scale)); }
         void setTranslate(vec3 t){ translate = t; update(); }
         void setScale(const double d){ scale = vec3(d,d,d); update(); }
         void rotateCube(vec3 r){ rotate += r; update(); }
@@ -164,10 +169,10 @@ class cube{
                 std::bind(tcsort, std::placeholders::_1,std::placeholders::_2, cameraP, cameraN));
             for (int i = 0; i < 12; i++){
                 int temp = i*3;
-                if(triangles[i]*cameraP){
-                    points[temp] = triangles[i].points[2];
+                if(triangles[i]*(cameraP)){
+                    points[temp] = triangles[i].points[0];
                     points[temp+1] = triangles[i].points[1];
-                    points[temp+2] = triangles[i].points[0];
+                    points[temp+2] = triangles[i].points[2];
                 }
                 else{
                     points[temp] = ZERO3;

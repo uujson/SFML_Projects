@@ -32,9 +32,10 @@ class camera{
         }
         void setFOV(double FOV){ fov = FOV; }
         void update(){
+            // lookingAt = vec3(-position.x, -position.y, -1);
             normal = normalize(position-lookingAt);
             rightNormal = normalize(cross(vec3(0,0,1),normal));
-            upNormal = normalize(cross(normal, rightNormal));
+            upNormal = normalize(cross(normal,rightNormal));
         }
         vec3 worldTranslate(){ return -position; }
         mat4 viewMatrix(){
@@ -46,6 +47,12 @@ class camera{
                 vec4(normal, normal*temp),
                 vec4(0,0,0,1)
             );
+        }
+        camera& operator+=(vec3 v){
+            // position += v;
+            position += v;
+            update();
+            return *this;
         }
 };
 
@@ -74,10 +81,14 @@ class render{
             Camera.lookAt(cameraTarget);
             update();
         }
-        void updateFOV(){ projection = projectionMatrix(Camera.fov, WINDOW_WIDTH/WINDOW_HEIGHT, 0.1, 100.0); }
+        void updateFOV(){ projection = projectionMatrix(Camera.fov, WINDOW_WIDTH/WINDOW_HEIGHT, 0.0, 100.0); }
         void update(){
             model = modelMatrix(vec3(1.0,1.0,1.0), vec3(0.0,0.0,0.0), Camera.worldTranslate());
             view = Camera.viewMatrix();
+        }
+        void moveCamera(vec3 v){
+            Camera += v;
+            update();
         }
         vec3 project(vec3 v){
             vec4 v4 = projection*view*model*vec4(v);
