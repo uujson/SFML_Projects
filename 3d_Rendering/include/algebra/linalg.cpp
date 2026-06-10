@@ -203,7 +203,7 @@ mat4::mat4(const vec4 r0, const vec4 r1, const vec4 r2, const vec4 r3){
     m[0][0] = r0.x; m[0][1] = r0.y; m[0][2] = r0.z; m[0][3] = r0.w;
     m[1][0] = r1.x; m[1][1] = r1.y; m[1][2] = r1.z; m[1][3] = r1.w;
     m[2][0] = r2.x; m[2][1] = r2.y; m[2][2] = r2.z; m[2][3] = r2.w;
-    m[3][0] = r2.x; m[3][1] = r2.y; m[3][2] = r3.z; m[3][3] = r3.w;
+    m[3][0] = r3.x; m[3][1] = r3.y; m[3][2] = r3.z; m[3][3] = r3.w;
 }
 vec4 mat4::operator*(vec4 v){ return vec4(v*row(0), v*row(1), v*row(2), v*row(3)); }
 mat4 mat4::operator*(mat4 o){
