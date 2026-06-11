@@ -44,7 +44,7 @@ class triangle{
             return *this;
         }
         bool operator*(camera c){
-            return (normal*(midpoint - c.position) < 0) || (normal*(midpoint - c.lookingAt) < 0);
+            return (normal*(midpoint - c.position) < 0);
         }  
 };
 
