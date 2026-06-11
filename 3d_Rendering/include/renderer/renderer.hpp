@@ -75,7 +75,7 @@ class renderer{
             projection = projectionMatrix(Camera.fov, WINDOW_WIDTH/WINDOW_HEIGHT, 0, 500.0);
         }
         void update(){
-            model = modelMatrix(vec3(1,1,1), vec3(0,0,0), -Camera.position);
+            model = modelMatrix(vec3(1,1,1), vec3(0,0,0), vec3(0,0,0));
             view = Camera.viewMatrix();
         }
         vec3 project(vec3 v){

@@ -79,7 +79,7 @@ class triangle{
             return *this;
         }
         bool operator*(vec3 v){
-            return (normalize(v-midpoint) * (normal) >= -ANGLE);
+            return (normalize(v-midpoint) * (normal) >= 0);
         }
 };
 
