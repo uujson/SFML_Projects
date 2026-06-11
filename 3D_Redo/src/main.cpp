@@ -1,5 +1,6 @@
 #include "globals.hpp"
 #include "../render/render.hpp"
+#include "../vertex/geometry.hpp"
 
 class line : public sf::Drawable {
     public:
@@ -39,17 +40,24 @@ class line : public sf::Drawable {
 int main(){
     sf::RenderWindow window(sf::VideoMode(WINDOW_WIDTH, WINDOW_HEIGHT), "3D RENDERER");
     sf::Event event;
-    window.setFramerateLimit(60.0);
+    window.setFramerateLimit(144.0);
     userProcess up = userProcess();
-    render r = render(vec3(1,1,1),vec3(0,0,0));
+    render r = render(vec3(1,1,1),vec3(-1,1,0));
     float ftemp[2] = {0,0};
-
+    cube test = cube();
     line axes[3] = {line(vec3(1,0,0),vec3(0,0,0)),
                     line(vec3(0,1,0),vec3(0,0,0)),
                     line(vec3(0,0,1),vec3(0,0,0))};
     axes[0].color(0);
     axes[1].color(1);
     axes[2].color(2);
+    test.setColor(0,sf::Color::Green);
+    test.setColor(1,sf::Color::Cyan);
+    test.setColor(2,sf::Color::Yellow);
+    test.setColor(3,sf::Color::Red);
+    test.setColor(4,sf::Color::Blue);
+    test.setColor(5,sf::Color::White);
+
     while (window.isOpen()){
         up.process();
         if (up.isClosed()){ window.close(); break; }
@@ -62,18 +70,16 @@ int main(){
         for (int i = 0; i < 3; i++){
             axes[i].setPos(r.projectPoint(axes[i].points[0]), r.projectPoint(axes[i].points[1]));
         }
-
+        test(r);
 
 
         window.clear(sf::Color::Black);
         for (int i = 0; i < 3; i++){
             window.draw(axes[i]);
         }
-        window.draw(axes[1]);
+        window.draw(test);
         window.display();
         r.print();
-        // std::cout << axes[1].verts[0].position.x << ' ' << axes[1].verts[0].position.y << std::endl;
-        // std::cout << axes[1].verts[1].position.x << ' ' << axes[1].verts[1].position.y << std::endl;
     }
     return 0;
 }

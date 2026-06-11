@@ -28,6 +28,10 @@ mat4 rotatex(float d);
 mat4 rotatey(float d);
 mat4 rotatez(float d);
 
+bool zero(float f);
+float mult(float l, float r);
+float div(float l, float r);
+
 class vec2{
     public:
         float x,y;
@@ -58,6 +62,7 @@ class vec2{
         // util
         float magnitude();
         vec2 normal();
+        vec2 project(vec2 v);
 
 };
 
@@ -91,13 +96,16 @@ class vec3{
         vec3& operator*=(vec3 v);
         // matrix mult
         vec3 operator*(mat3 m);
+        vec3 operator*(mat4 m);
         vec3& operator*=(mat3 m);
+        vec3& operator*=(mat4 m);
         // comparison ops
         bool operator==(vec3 v);
         bool operator!=(vec3 v);
         // util
         float magnitude();
         vec3 normal();
+        vec3 project(vec3 v);
 };
 
 class vec4{
@@ -134,6 +142,7 @@ class vec4{
         // util
         float magnitude();
         vec4 normal();
+        vec4 project(vec4 v);
 };
 
 class mat3{

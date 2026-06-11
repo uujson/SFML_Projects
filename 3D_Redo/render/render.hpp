@@ -16,7 +16,6 @@ class render{
         render(vec3 cameraPosition, vec3 cameraTarget) : render(cameraPosition, cameraTarget, 45.0){}
         render(vec3 cameraPosition, vec3 cameraTarget, float fov){
             Camera = camera(cameraPosition, cameraTarget, fov);
-            Camera.setTarget(cameraTarget);
             updateFOV();
             update();
         }
@@ -35,13 +34,14 @@ class render{
             project = mat4(
                 fov, 0, 0, 0,
                 0, fov*(WINDOW_WIDTH/WINDOW_HEIGHT), 0, 0,
-                0, 0, (500)/(499.9), -(50)/(499.9),
+                0, 0, (500)/(499.9), (50)/(499.9),
                 0, 0, 1, 0
             );
-            update(); 
+            update();
         }
         void update(){
-            model = modelMatrix(vec3(1,1,1),vec3(0,0,0),vec3(0,0,0));
+            // model = modelMatrix(vec3(1,1,1),vec3(0,0,0),vec3(0,0,0));
+            model = mat4(1.0);
             view = Camera.getViewMatrix();
         }
         render& operator+=(vec3 v){

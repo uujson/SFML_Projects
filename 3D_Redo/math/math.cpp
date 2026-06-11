@@ -64,7 +64,7 @@ vec2& vec2::operator-=(vec2 v){
 }
 // dot product
 float vec2::operator*(vec2 v){
-    return (x*v.x + y*v.y);
+    return (mult(x,v.x) + mult(y,v.y));
 }
 // comparison ops
 bool vec2::operator==(vec2 v){
@@ -79,6 +79,9 @@ float vec2::magnitude(){
 }
 vec2 vec2::normal(){
     return vec2(x,y)/magnitude();
+}
+vec2 vec2::project(vec2 v){
+    return (*this)*(normalize(v)*(*this));
 }
 
 // |------------------------------------------VEC3------------------------------------------|
@@ -134,27 +137,45 @@ vec3& vec3::operator-=(vec3 v){
 }
 // dot product
 float vec3::operator*(vec3 v){
-    return (x*v.x + y*v.y + z*v.z);
+    return (mult(x,v.x) + mult(y,v.y) + mult(z,v.z));
 }
 // cross product
 vec3 vec3::operator^(vec3 v){
-    return vec3( ((y*v.z)-(z*v.y)), ((z*v.x)-(x*v.z)), ((x*v.y)-(y*v.x)) );
+    return vec3( (mult(y,v.z)-mult(z,v.y)), (mult(z,v.x)-mult(x,v.z)), (mult(x,v.y)-mult(y,v.x)) );
 }
 // cross product assignment op
 vec3& vec3::operator*=(vec3 v){
-    x = ((y*v.z)-(z*v.y));
-    y = ((z*v.x)-(x*v.z));
-    z = ((x*v.y)-(y*v.x));
+    x = (mult(y,v.z)-mult(z,v.y));
+    y = (mult(z,v.x)-mult(x,v.z));
+    z = (mult(x,v.y)-mult(y,v.x));
     return *this;
 }
 // matrix mult
 vec3 vec3::operator*(mat3 m){
-    return vec3(vec3(x,y,z)*m.row(0), vec3(x,y,z)*m.row(1), vec3(x,y,z)*m.row(2));
+    return vec3((*this)*m.row(0), (*this)*m.row(1), (*this)*m.row(2));
 }
 vec3& vec3::operator*=(mat3 m){
-    x = vec3(x,y,z)*m.row(0);
-    y = vec3(x,y,z)*m.row(1);
-    z = vec3(x,y,z)*m.row(2);
+    x = (*this)*m.row(0);
+    y = (*this)*m.row(1);
+    z = (*this)*m.row(2);
+    return *this;
+}
+vec3 vec3::operator*(mat4 m){
+    vec4 temp = vec4(*this);
+    return vec3(
+        vec4(
+            temp*m.row(0),
+            temp*m.row(1),
+            temp*m.row(2),
+            temp*m.row(3)
+        )
+    );
+}
+vec3& vec3::operator*=(mat4 m){
+    vec4 temp = vec4(*this);
+    x = temp*m.row(0);
+    y = temp*m.row(1);
+    z = temp*m.row(2);
     return *this;
 }
 // comparison ops
@@ -166,10 +187,13 @@ bool vec3::operator!=(vec3 v){
 }
 // util
 float vec3::magnitude(){
-    return sqrt(x*x + y*y + z*z);
+    return sqrt(mult(x,x) + mult(y,y) + mult(z,z));
 }
 vec3 vec3::normal(){
     return vec3(x,y,z)/magnitude();
+}
+vec3 vec3::project(vec3 v){
+    return (*this)*(normalize(v)*(*this));
 }
 
 // |------------------------------------------VEC4------------------------------------------|
@@ -179,7 +203,7 @@ vec4::vec4(vec3 v) : vec4(v.x,v.y,v.z,1){}
 vec4::vec4(vec2 v) : vec4(v.x,v.y,0,1){}
 vec4::vec4(const float X, const float Y, const float Z, const float W) : x(X), y(Y), z(Z), w(W){}
 // scalar ops
-vec4 vec4::operator*(const float f){ return vec4(x*f, y*f, z*f, w*f); }
+vec4 vec4::operator*(const float f){ return vec4(mult(x,f), mult(y,f), mult(z,f), mult(w,f)); }
 vec4 vec4::operator/(const float f){ return vec4(x/f, y/f, z/f, w/f); }
 vec4 vec4::operator-(){ return vec4(-x, -y, -z, -w); }
 // vector ops
@@ -231,7 +255,7 @@ vec4& vec4::operator-=(vec4 v){
 }
 // dot product
 float vec4::operator*(vec4 v){
-    return (x*v.x + y*v.y + z*v.z + w*v.w);
+    return (mult(x,v.x) + mult(y,v.y) + mult(z,v.z) + mult(w,v.w));
 }
 // matrix mult
 vec4 vec4::operator*(mat4 m){
@@ -253,10 +277,13 @@ bool vec4::operator!=(vec4 v){
 }
 // util
 float vec4::magnitude(){
-    return sqrt(x*x + y*y + z*z + w*w);
+    return sqrt(mult(x,x) + mult(y,y) + mult(z,z) + mult(w,w));
 }
 vec4 vec4::normal(){
     return vec4(x,y,z,w)/magnitude();
+}
+vec4 vec4::project(vec4 v){
+    return (*this)*(normalize(v)*(*this));
 }
 
 // |------------------------------------------MAT3------------------------------------------|
@@ -411,7 +438,7 @@ float magnitude(vec3 v){
     return v.magnitude();
 }
 float buffer(vec3 v){
-    return (v.x*v.x + v.y*v.y + v.z*v.z);
+    return (mult(v.x,v.x) + mult(v.y,v.y) + mult(v.z,v.z));
 }
 mat4 modelMatrix(vec3 scale, vec3 rotate, vec3 translate){
     return ((translate4(translate)) * (rotate4(rotate)) * (scale4(scale)));
@@ -436,9 +463,9 @@ mat4 rotate4(vec3 v){
     mat4 x = IDEN4;
     mat4 y = IDEN4;
     mat4 z = IDEN4;
-    if (v.x != 0){ x = rotatex(v.x*D2R); }
-    if (v.y != 0){ x = rotatey(v.y*D2R); }
-    if (v.z != 0){ x = rotatez(v.z*D2R); }
+    if (v.x != 0){ x = rotatex(mult(v.x,D2R)); }
+    if (v.y != 0){ x = rotatey(mult(v.y,D2R)); }
+    if (v.z != 0){ x = rotatez(mult(v.z,D2R)); }
     return x*y*z;
 }
 mat4 rotatex(float d){
@@ -464,4 +491,16 @@ mat4 rotatez(float d){
         0,0,1,0,
         0,0,0,1
     );
+}
+
+bool zero(float f){ return (f == 0); }
+
+float mult(float l, float r){
+    if (!zero(l) && !zero(r)){ return (l*r);}
+    return 0;
+}
+
+float div(float l, float r){
+    if (!zero(l) && !zero(r)){ return (l/r); }
+    return 0;
 }

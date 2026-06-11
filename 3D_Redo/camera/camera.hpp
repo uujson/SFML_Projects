@@ -17,9 +17,9 @@ class camera{
         camera(vec3 pos, vec3 target, float FOV){
             position = pos;
             fov = FOV;
-            lookingAt = target;
-            latitude = asin(target.z)*R2D/2;
-            longitude = acos(target.z)*R2D;
+            targetNormal = normalize(target-position);
+            latitude = asin(targetNormal.z)*R2D;
+            longitude = atan(targetNormal.y/targetNormal.x)*R2D+180;
             checkAngle();
             checkFOV();
         }
@@ -48,7 +48,7 @@ class camera{
         void setTarget(vec3 v){
             targetNormal = normalize(v - position);
             latitude = asin(targetNormal.z)*R2D;
-            longitude = acos(targetNormal.z)*R2D;
+            longitude = atan(div(targetNormal.y, targetNormal.x))*R2D+180.0;
             checkAngle();
         }
         void setFOV(float FOV){
@@ -60,9 +60,9 @@ class camera{
             if (v.x == 0 & v.y == 0 & v.z == 0){ return *this; }
             if (v.x != 0 || v.y != 0){
                 vec3 temp = normalize(vec3(v.x, v.y, 0))*0.01;
-                position += vec3(temp.x*rightNormal.y + temp.y*rightNormal.x, -temp.x*rightNormal.x + temp.y*rightNormal.y, 0);
+                position += vec3(mult(temp.x,rightNormal.y) + mult(temp.y,rightNormal.x), -mult(temp.x,rightNormal.x) + mult(temp.y,rightNormal.y), 0);
             }
-            position += vec3(0,0,v.z*0.01);
+            position += vec3(0,0,mult(v.z,0.01));
             update();
             return *this;
         }
@@ -96,11 +96,11 @@ class camera{
             update();
         }
         void update(){
-            float longtemp = longitude*D2R;
-            float lattemp = latitude*D2R;
-            targetNormal = vec3(cos(lattemp)*cos(longtemp), cos(lattemp)*sin(longtemp),sin(lattemp));
+            float longtemp = mult(longitude,D2R);
+            float lattemp = mult(latitude,D2R);
+            targetNormal = -vec3(cos(lattemp)*cos(longtemp), cos(lattemp)*sin(longtemp),sin(lattemp));
             lookingAt = position - targetNormal;
-            rightNormal = normalize(cross(targetNormal, UP));
+            rightNormal = normalize(cross(UP, targetNormal));
             upNormal = normalize(cross(targetNormal, rightNormal));
         }
 };
