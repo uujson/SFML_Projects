@@ -20,8 +20,8 @@ class userProcess{
             latitude = 0;
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Escape)){ close = true; }
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){ dx -= 1; }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){ dx += 1; }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){ dx += 1; }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::S)){ dx -= 1; }
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){ dy -= 1; }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){ dy += 1; }
@@ -29,8 +29,8 @@ class userProcess{
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Space)){ dz += 1; }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::LControl)){ dz -= 1; }
 
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){ longitude += 0.5; }
-            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){ longitude -= 0.5; }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){ longitude -= 0.5; }
+            if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){ longitude += 0.5; }
 
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){ latitude += 0.5; }
             if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down)){ latitude -= 0.5; }

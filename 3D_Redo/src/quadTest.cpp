@@ -44,19 +44,18 @@ int main(){
     userProcess up = userProcess();
     render r = render(vec3(1,1,1),vec3(0,0,0));
     float ftemp[2] = {0,0};
-    cube test = cube({0,0,0},0.5);
+
+    quad test = quad();
+
+
+
+
     line axes[3] = {line(vec3(1,0,0),vec3(0,0,0)),
                     line(vec3(0,1,0),vec3(0,0,0)),
                     line(vec3(0,0,1),vec3(0,0,0))};
     axes[0].color(0);
     axes[1].color(1);
     axes[2].color(2);
-    test.setColor(0,sf::Color::Green);
-    test.setColor(1,sf::Color::Cyan);
-    test.setColor(2,sf::Color::Yellow);
-    test.setColor(3,sf::Color::Red);
-    test.setColor(4,sf::Color::Blue);
-    test.setColor(5,sf::Color::White);
 
     while (window.isOpen()){
         up.process();
@@ -79,7 +78,8 @@ int main(){
         }
         window.draw(test);
         window.display();
-        r.print();
+        // r.print();
+        // test.print();
     }
     return 0;
 }

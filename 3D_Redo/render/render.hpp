@@ -34,7 +34,7 @@ class render{
             project = mat4(
                 fov, 0, 0, 0,
                 0, fov*(WINDOW_WIDTH/WINDOW_HEIGHT), 0, 0,
-                0, 0, (500)/(499.9), (50)/(499.9),
+                0, 0, (500)/(499.9), (100)/(499.99),
                 0, 0, 1, 0
             );
             update();
@@ -67,8 +67,8 @@ class render{
             updateFOV();
         }
         vec3 projectPoint(vec3 v){
-            vec4 v4 = project*view*model*vec4(v);
-            vec3 v3 = vec3(v4.x,v4.y,v4.z)/(4.0*v4.w);
+            vec4 v4 = vec4(v)*view*project;
+            vec3 v3 = vec3(v4.x,v4.y,v4.z)/(v4.w);
             v3.x = v3.x*WINDOW_WIDTH + WINDOW_WIDTH2;
             v3.y = v3.y*WINDOW_HEIGHT + WINDOW_HEIGHT2;
             return v3;

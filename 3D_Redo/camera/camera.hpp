@@ -100,8 +100,8 @@ class camera{
             float lattemp = mult(latitude,D2R);
             targetNormal = -vec3(cos(lattemp)*cos(longtemp), cos(lattemp)*sin(longtemp),sin(lattemp));
             lookingAt = position - targetNormal;
-            rightNormal = normalize(cross(UP, targetNormal));
-            upNormal = normalize(cross(targetNormal, rightNormal));
+            rightNormal = normalize(cross(targetNormal,UP));
+            upNormal = normalize(cross(rightNormal, targetNormal));
         }
 };
 

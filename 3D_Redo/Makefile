@@ -1,3 +1,9 @@
+quadTest: prepare
+	g++ -o quadTest src/quadTest.cpp *.o -lsfml-graphics -lsfml-window -lsfml-system
+
+isoTest: prepare
+	g++ -o isoTest src/isoTest.cpp *.o -lsfml-graphics -lsfml-window -lsfml-system
+
 main: prepare
 	g++ -o main src/main.cpp *.o -lsfml-graphics -lsfml-window -lsfml-system
 
@@ -6,4 +12,6 @@ prepare:
 
 clean:
 	rm -f *.o
-	rm -f mmain
+	rm -f main
+	rm -f quadTest
+	rm -f isoTest
